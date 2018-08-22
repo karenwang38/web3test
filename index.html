@@ -1,0 +1,72 @@
+<!DOCTYPE html> 
+<html lang="en">
+ <head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+<title>Document</title> 
+
+<link rel="stylesheet" type="text/css" href="main.css"> 
+
+<script src="./node_modules/web3/dist/web3.min.js"></script> 
+
+</head> 
+<body> 
+	<div class="container"> 
+
+		<h1>Info Contract</h1>
+		<h2 id="info"></h2>
+
+		<label for="name" class="col-lg-2 control-label">Name</label> 
+		<input id="name" type="text"> 
+
+		<label for="name" class="col-lg-2 control-label">Age</label> 
+		<input id="age" type="text"> <button id="button">Update Info</button> 
+
+	</div>
+
+ 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
+
+	<script> 
+
+	// Our future code here.. 
+		 var Web3 = require('web3');
+		var web3 = new Web3('http://localhost:8545'); // same output as with option below
+		// var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+		web3.eth.getAccounts(console.log);
+		console.log("Hello World");
+		web3.eth.defaultAccount = web3.eth.accounts[0];
+
+		
+		var abi = [	{		"constant":true,		"inputs":[],		"name":"getInfo",		"outputs":[			{				"name":"",				"type":"string"			},			{				"name":"",				"type":"uint256"			}		],		"payable":false,		"stateMutability":"view",		"type":"function"	},	{		"constant":false,		"inputs":[			{				"name":"_fName",				"type":"string"			},			{				"name":"_age",				"type":"uint256"			}		],		"name":"setInfo",		"outputs":[],		"payable":false,		"stateMutability":"nonpayable",		"type":"function"	}];
+		
+                var contractAddr = "0x692a70d2e424a56d2c6c27aa97d1a86395877b3a";
+		var infoContract = web3.eth.contract(abi);
+		var info = InfoContract.at(contractAddr);
+
+
+		info.getInfo(function(error, result){
+ if(!error) 
+	{
+		 $("#info").html(result[0]+' ('+result[1]+' years old)'); console.log(result); 
+	} 
+else 
+	console.error(error); }); 
+$("#button").click(function() {
+ 	info.setInfo($("#name").val(), $("#age").val());
+ });
+
+
+
+
+
+	</script> 
+
+</body> 
+</html>
+
+
+
+
+
+
